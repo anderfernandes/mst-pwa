@@ -1,31 +1,65 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view />
-  </div>
+  <v-app>
+
+    <!-- Sizes your content based upon application components -->
+    <v-content class="white pa-0">
+
+      <v-snackbar :value="errors && errors.length > 0" v-if="errors && errors.length > 0" top :color="errors[0].type">
+        {{ errors[0].title }}: {{ errors[0].message }}
+      </v-snackbar>
+
+      <!-- Provides the application the proper gutter -->
+      <v-container fluid class="pt-0">
+        
+        <!-- If using vue-router -->
+        <router-view></router-view>
+        
+      </v-container>
+    </v-content>
+
+    <v-bottom-navigation color="indigo darken-2" fixed>
+      <v-btn exact to="/">
+        <span>Home</span>
+        <v-icon>mdi-home</v-icon>
+      </v-btn>
+
+      <v-btn exact to="/pricing">
+        <span>Pricing</span>
+        <v-icon>mdi-currency-usd</v-icon>
+      </v-btn>
+
+      <v-btn exact to="/our-shows">
+        <span>Our Shows</span>
+        <v-icon>mdi-filmstrip</v-icon>
+      </v-btn>
+
+      <v-btn exact to="/calendar">
+        <span>Calendar</span>
+        <v-icon>mdi-calendar-month-outline</v-icon>
+      </v-btn>
+
+    </v-bottom-navigation>
+    
+  </v-app>
 </template>
 
-<style>
-#app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
-}
+<script>
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
+  export default {
+  
+    computed : {
 
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
+      errors : {
+        get()      { return this.$store.getters.errors },
+        set(value) { return this.$store.commit('SET_ERRORS', value )}
+      },
+
+    }
+  }
+
+</script>
+
+<style scoped>
+  .v-bottom-navigation--fixed {position: fixed !important;}
+  .v-item-group.v-bottom-navigation .v-btn {height: inherit !important;}
 </style>
