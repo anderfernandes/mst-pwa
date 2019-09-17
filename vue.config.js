@@ -9,8 +9,9 @@ module.exports = {
     manifestOptions: {
       name: 'Science Theater',
       short_name: 'Science Theater',
-      start_url: './index.html',
-      theme_color: '#003E7E'
+      start_url: './',
+      theme_color: '#003E7E',
+      background_color: '#FFFFFF',
     },
   }
 }
