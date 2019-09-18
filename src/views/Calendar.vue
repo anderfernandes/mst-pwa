@@ -63,7 +63,7 @@
     data : () => ({
       type        : 'day',
       isLoading   : true,
-      today       : '2019-09-05',
+      today       : new Date().toISOString().substr(0, 10),
       //focus       : new Date().toISOString().substr(0, 10),
     }),
     computed: {

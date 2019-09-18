@@ -11,7 +11,8 @@
       <div class="text-center">
         <h2 class="title">Upcoming Shows</h2>
         <h3 class="body-2">
-          {{ format(new Date(start), 'EEEE, MMMM d') }} - {{ format(new Date(end), 'EEEE, MMMM d') }}
+          {{ format(parse(start, 'yyyy-MM-dd', new Date()), 'EEEE, MMMM d') }} - 
+          {{ format(parse(end, 'yyyy-MM-dd', new Date()), 'EEEE, MMMM d') }}
         </h3>
       </div>
     </v-col>
@@ -20,7 +21,7 @@
         <v-col xs="12" md="8" offset-md="2">
           <div v-for="item in schedule" :key="item.date" v-show="item.events.length > 0">
             <v-list subheader>
-              <v-subheader class="pl-2 pr-2 body-2 black--text">
+              <v-subheader class="pl-2 pr-2 body-2 black--text subtitle-2 font-weight-bold">
                 {{ format(new Date(item.date), 'EEEE, MMMM d') }}
               </v-subheader>
               <v-list-item v-for="event in item.events" 
@@ -59,7 +60,7 @@
 <script>
 
   import { mapGetters, mapActions }      from 'vuex'
-  import { format, formatDistanceToNow } from 'date-fns'
+  import { format, formatDistanceToNow, parse } from 'date-fns'
 
   export default {
     
@@ -113,6 +114,8 @@
       format,
       
       formatDistanceToNow,
+
+      parse,
 
     },
 
