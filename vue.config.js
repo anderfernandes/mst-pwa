@@ -1,5 +1,8 @@
 module.exports = {
   pwa: {
+    name: 'Science Theater',
+    themeColor: '#003E7E',
+    msTileColor: '#FFFFFF',
     iconPaths: {
       favicon32: 'img/icons/favicon-32x32.png',
       appleTouchIcon: 'img/icons/apple-touch-icon-180x180.png',
