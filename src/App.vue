@@ -8,13 +8,15 @@
         {{ errors[0].title }}: {{ errors[0].message }}
       </v-snackbar>
 
-      <!-- Provides the application the proper gutter -->
-      <v-container fluid class="pt-0">
+      <v-container fluid class="pt-0" style="height:100%; min-height:100%">
         
         <!-- If using vue-router -->
-        <router-view></router-view>
+        <transition mode="out-in" name="fade-transition">
+          <router-view />
+        </transition>
         
       </v-container>
+
     </v-content>
 
     <v-bottom-navigation color="indigo darken-2" fixed>
@@ -62,4 +64,5 @@
 <style scoped>
   .v-bottom-navigation--fixed {position: fixed !important;}
   .v-item-group.v-bottom-navigation .v-btn {height: inherit !important;}
+  #home, #pricing, #our-shows, #calendar { height:100% !important; min-height:100% !important; }
 </style>

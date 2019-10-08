@@ -11,6 +11,7 @@ export default new Vuex.Store({
 
   state: {
 
+    loading         : true,
     start           : new Date().toJSON().substr(0, 10),
     end             : new Date(addDays(new Date(), 7)).toJSON().substr(0, 10),
     
@@ -28,6 +29,10 @@ export default new Vuex.Store({
   },
 
   mutations: {
+
+    SET_LOADING(state, payload) {
+      Object.assign(state, { loading: payload })
+    },
 
     SET_START(state, payload) {
       Object.assign(state, { start : payload })

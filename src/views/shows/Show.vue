@@ -1,33 +1,56 @@
 <template>
   <v-row align="center" justify="center" class="mb-8" v-if="show">
-    <v-app-bar dark color="#003E7E" class="elevation-0" fixed>
-      <v-btn icon>
-        <v-icon @click="$router.push({ name: 'our-shows' })">
-          mdi-chevron-left
-        </v-icon>
-      </v-btn>
-      <v-toolbar-title class="pl-0">
-        {{ show.name }}
-      </v-toolbar-title>
-    </v-app-bar>
+    <v-card flat tile width="100%" height="100%">
+        <v-img :aspect-ratio="9/16" :src="show.cover" height="400px" dark gradient="to top right, rgba(0,0,0,.75), rgba(0,0,0,.25)">
+          
+          <v-row class="fill-height">
+
+            <v-col cols="12">
+              <v-card-title>
+                <v-btn dark icon @click="$router.back()">
+                  <v-icon>mdi-chevron-left</v-icon>
+                </v-btn>
+              </v-card-title>
+            </v-col>
+            
+            <v-col cols="12">
+              
+              <v-list-item class="mb-0">
+                <v-list-item-avatar
+                  size="128"
+                  tile
+                  style="height: inherit !important"
+                >
+                  <v-img :src="show.cover"></v-img>
+                </v-list-item-avatar>
+              </v-list-item>
+
+              <v-list-item two-line class="pt-0">
+                <v-list-item-content class="align-self-start pt-0">
+                  <v-list-item-content class="align-self-start">
+                  <v-list-item-title class="headline white--text" v-text="show.name" />
+                </v-list-item-content>
+                  <v-list-item-subtitle>
+                    <v-chip label small dark color="indigo darken-2">
+                      <v-icon small left>mdi-bookmark</v-icon>
+                      {{ show.type }}
+                    </v-chip>
+                    <v-chip label small dark color="indigo darken-2" class="ml-2">
+                      <v-icon small left>mdi-clock-outline</v-icon>
+                      {{ show.duration }} minutes
+                    </v-chip>
+                  </v-list-item-subtitle>
+                </v-list-item-content>
+
+              </v-list-item>
+            </v-col>
+
+          </v-row>
+        </v-img>
+      </v-card>
     <v-col>
       <v-row>
-        <v-col cols="12" class="my-12" xs="12" md="8" offset-md="2">
-          <v-row justify="center">
-            <v-img max-width="200" :src="show.cover"></v-img>
-          </v-row>
-          <div class="text-center headline">
-            <v-chip label small dark color="#003E7E" class="ml-2">
-              <v-icon small left>mdi-filmstrip</v-icon>
-              {{ show.type }}
-            </v-chip>
-            <v-chip label small dark color="#003E7E" class="ml-2">
-              <v-icon small left>mdi-clock-outline</v-icon>
-              {{ show.duration }} minutes
-            </v-chip>
-          </div>
-          <div class="text-center headline">{{ show.name }}</div>
-          <v-divider class="mb-2"></v-divider>
+        <v-col cols="12" xs="12" md="8" offset-md="2">
           <div class="body-2" v-if="show.description" v-html="marked(show.description)"></div>
         </v-col>
       </v-row>
@@ -71,3 +94,7 @@
     }
   }
 </script>
+
+<style>
+  iframe { width:100% !important }
+</style>

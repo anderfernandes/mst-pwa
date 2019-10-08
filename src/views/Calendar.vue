@@ -1,60 +1,67 @@
 <template>
-  <v-row class="fill-height mb-8" v-if="!isLoading">
-    <v-app-bar dark color="#003E7E" class="elevation-0" fixed>
-      <v-btn fab icon small @click="setToday">
-          <v-icon>
-            mdi-calendar
-          </v-icon>
-        </v-btn>
-        <v-btn fab icon small @click="prev">
-          <v-icon>mdi-chevron-left</v-icon>
-        </v-btn>
-        <v-btn fab icon small @click="next">
-          <v-icon>mdi-chevron-right</v-icon>
-        </v-btn>
-        <v-spacer />
-        <v-menu offset-y>
-          <template v-slot:activator="{ on }">
-            <v-btn outlined v-on="on" class="text-none">
-              {{ type }}
-              <v-icon right>mdi-chevron-down</v-icon>  
-            </v-btn>
-          </template>
-          <v-list>
-            <v-list-item @click="type = 'day'">
-              <v-list-item-title>Day</v-list-item-title>
-            </v-list-item>
-            <v-list-item @click="type = 'week'">
-              <v-list-item-title>Week</v-list-item-title>
-            </v-list-item>
-            <v-list-item @click="type = 'month'">
-              <v-list-item-title>Month</v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </v-menu>
-    </v-app-bar>
-    <v-col class="mt-2">
-      <v-row>
-        <v-col cols="12" xs="12" md="8" offset-md="2">
-          <v-sheet height="100%" class="mt-12">
-            <v-calendar color="indigo darken-2 white--text"
-                        :now="today"
-                        :event-margin-bottom="3"
-                        v-model="focus"
-                        :type="type"
-                        ref="calendar"
-                        :event-color="getEventColor"
-                        :interval-count="17"
-                        :first-interval="6"
-                        @click:more="viewDay"
-                        @click:date="viewDay"
-                        @click:event="handleEventClick"
-                        :events="events" />
-          </v-sheet>
-        </v-col>
-      </v-row>
-    </v-col>
-  </v-row>
+  <div id="calendar">
+    <v-row class="fill-height" align="center" justify="center" v-if="loading">
+      <v-col class="text-center">
+        <v-progress-circular indeterminate color="indigo darken-2" />
+      </v-col>
+    </v-row>
+    <v-row class="fill-height mb-8" v-else>
+      <v-app-bar dark color="#003E7E" class="elevation-0" fixed>
+        <v-btn fab icon small @click="setToday">
+            <v-icon>
+              mdi-calendar
+            </v-icon>
+          </v-btn>
+          <v-btn fab icon small @click="prev">
+            <v-icon>mdi-chevron-left</v-icon>
+          </v-btn>
+          <v-btn fab icon small @click="next">
+            <v-icon>mdi-chevron-right</v-icon>
+          </v-btn>
+          <v-spacer />
+          <v-menu offset-y>
+            <template v-slot:activator="{ on }">
+              <v-btn outlined v-on="on" class="text-none">
+                {{ type }}
+                <v-icon right>mdi-chevron-down</v-icon>  
+              </v-btn>
+            </template>
+            <v-list>
+              <v-list-item @click="type = 'day'">
+                <v-list-item-title>Day</v-list-item-title>
+              </v-list-item>
+              <v-list-item @click="type = 'week'">
+                <v-list-item-title>Week</v-list-item-title>
+              </v-list-item>
+              <v-list-item @click="type = 'month'">
+                <v-list-item-title>Month</v-list-item-title>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+      </v-app-bar>
+      <v-col class="mt-2">
+        <v-row>
+          <v-col cols="12" xs="12" md="8" offset-md="2">
+            <v-sheet height="100%" class="mt-12">
+              <v-calendar color="indigo darken-2 white--text"
+                          :now="today"
+                          :event-margin-bottom="3"
+                          v-model="focus"
+                          :type="type"
+                          ref="calendar"
+                          :event-color="getEventColor"
+                          :interval-count="17"
+                          :first-interval="6"
+                          @click:more="viewDay"
+                          @click:date="viewDay"
+                          @click:event="handleEventClick"
+                          :events="events" />
+            </v-sheet>
+          </v-col>
+        </v-row>
+      </v-col>
+    </v-row>
+  </div>
 </template>
 
 <script>
@@ -62,7 +69,6 @@
   export default {
     data : () => ({
       type        : 'day',
-      isLoading   : true,
       today       : new Date().toISOString().substr(0, 10),
       //focus       : new Date().toISOString().substr(0, 10),
     }),
@@ -71,7 +77,11 @@
       focus: {
         set(value) { this.$store.commit('SET_FOCUS', value) },
         get()      { return this.$store.state.focus },
-      }
+      },
+      loading: {
+        get() { return this.$store.state.loading },
+        set(value) { this.$store.commit('SET_LOADING', value) }
+      },
     },
     methods: {
       getEventColor(event) { return event.color       },
@@ -88,9 +98,9 @@
       
     },
     async created() {
-      this.isLoading = true
+      this.loading = true
       await this.$store.dispatch('fetchCalendarEvents')
-      this.isLoading = false
+      this.loading = false
     }
   }
 
