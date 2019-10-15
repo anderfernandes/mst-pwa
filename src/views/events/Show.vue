@@ -109,3 +109,7 @@
     }
   }
 </script>
+
+<style>
+  iframe { width:100% !important }
+</style>

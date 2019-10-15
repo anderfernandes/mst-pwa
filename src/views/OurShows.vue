@@ -9,7 +9,11 @@
       <v-col cols="12" xs="12" md="8" offset-md="2">
         <v-row class="pa-0">
           <v-col cols="12" class="pa-1">
-            <v-select chips v-model="filter" :items="options" color="indigo darken-2" hide-details />
+            <v-chip-group column active-class="primary--text">
+              <v-chip outlined v-for="option in options" :key="option.value" @click.prevent="filter = option.value">
+                {{ option.text }}
+              </v-chip>
+            </v-chip-group>
           </v-col>
           <v-col cols="12" class="pa-1">
             <v-subheader>{{ shows.length }} {{ shows.length == 1 ? 'show' : 'shows' }}</v-subheader>

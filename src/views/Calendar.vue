@@ -44,18 +44,18 @@
           <v-col cols="12" xs="12" md="8" offset-md="2">
             <v-sheet height="100%" class="mt-12">
               <v-calendar color="indigo darken-2 white--text"
-                          :now="today"
-                          :event-margin-bottom="3"
-                          v-model="focus"
-                          :type="type"
-                          ref="calendar"
-                          :event-color="getEventColor"
-                          :interval-count="17"
-                          :first-interval="6"
-                          @click:more="viewDay"
-                          @click:date="viewDay"
-                          @click:event="handleEventClick"
-                          :events="events" />
+                :now="today"
+                :event-margin-bottom="3"
+                v-model="focus"
+                :type="type"
+                ref="calendar"
+                :event-color="getEventColor"
+                :interval-count="17"
+                :first-interval="6"
+                @click:more="viewDay"
+                @click:date="viewDay"
+                @click:event="handleEventClick"
+                :events="events" />
             </v-sheet>
           </v-col>
         </v-row>
