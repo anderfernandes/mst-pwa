@@ -40,6 +40,11 @@
         <v-icon>mdi-calendar-month-outline</v-icon>
       </v-btn>
 
+      <v-btn exact to="/constellations">
+        <span>Constellations</span>
+        <v-icon>mdi-weather-night</v-icon>
+      </v-btn>
+
     </v-bottom-navigation>
     
   </v-app>
@@ -64,5 +69,5 @@
 <style scoped>
   .v-bottom-navigation--fixed {position: fixed !important;}
   .v-item-group.v-bottom-navigation .v-btn {height: inherit !important;}
-  #home, #pricing, #our-shows, #calendar { height:100% !important; min-height:100% !important; }
+  #home, #pricing, #our-shows, #calendar, #constellations { height:100% !important; min-height:100% !important; }
 </style>

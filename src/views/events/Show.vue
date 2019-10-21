@@ -2,7 +2,9 @@
    <v-row align="start" justify="center" v-if="event">
      <v-col cols="12" xs="12" class="pa-0">
       <v-card flat tile width="100%" height="100%">
-        <v-img :aspect-ratio="9/16" :src="event.show.cover" height="300px" dark gradient="to top right, rgba(0,0,0,.75), rgba(0,0,0,.25)">
+        <v-img 
+          :aspect-ratio="9/16" 
+          :src="event.show.id == 1 ? settings.cover : event.show.cover" height="300px" dark gradient="to top right, rgba(0,0,0,.75), rgba(0,0,0,.25)">
           
           <v-row class="fill-height">
 
@@ -25,7 +27,8 @@
 
             <v-col cols="12">
               <v-card-title class="white--text pt-0 pb-0 align-end">
-                <div class="headline">{{ event.show.name }}</div>
+                <div class="headline" v-if="event.show.id != 1">{{ event.show.name }}</div>
+                <div class="headline" v-else>{{ event.memo }}</div>
               </v-card-title>
             </v-col>
 
@@ -35,11 +38,11 @@
                   <v-icon small left>mdi-bookmark</v-icon>
                   {{ event.type }}
                 </v-chip>
-                <v-chip label small dark color="indigo darken-2" class="ml-2">
+                <v-chip label small dark color="indigo darken-2" class="ml-2" v-if="event.show.id != 1">
                   <v-icon small left>mdi-filmstrip</v-icon>
                   {{ event.show.type }}
                 </v-chip>
-                <v-chip label small dark color="indigo darken-2" class="ml-2">
+                <v-chip label small dark color="indigo darken-2" class="ml-2" v-if="event.show.id != 1">
                   <v-icon small left>mdi-clock-outline</v-icon>
                   {{ event.show.duration }} minutes
                 </v-chip>
@@ -64,7 +67,8 @@
           <br><br>
           <h1 class="title">Description</h1> 
           <br>
-          <span class="text--primary" v-html="marked(event.show.description)"></span>
+          <span class="text--primary" v-if="event.show.id != 1" v-html="marked(event.show.description)"></span>
+          <span class="text--primary" v-else v-html="marked(event.memo)"></span>
         </v-col>
       </v-row>
     </v-col>
@@ -105,7 +109,12 @@
     async created() {
       this.isLoading = await true
       await this.fetchEvent()
+      if (!this.settings)
+        await this.$store.dispatch('fetchSettings')
       this.isLoading = await false
+    },
+    computed: {
+      settings() { return this.$store.state.settings }
     }
   }
 </script>

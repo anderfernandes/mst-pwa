@@ -9,7 +9,7 @@
       <v-col cols="12" xs="12" md="8" offset-md="2">
         <v-row class="pa-0">
           <v-col cols="12" class="pa-1">
-            <v-chip-group column active-class="primary--text">
+            <v-chip-group column active-class="indigo--text text--darken-4">
               <v-chip outlined v-for="option in options" :key="option.value" @click.prevent="filter = option.value">
                 {{ option.text }}
               </v-chip>

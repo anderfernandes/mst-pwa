@@ -35,10 +35,12 @@
                               :to="{ name : 'events.show', params : { id : event.id } }"
                               class="pl-2 pr-2">
                   <v-list-item-avatar tile size="64">
-                    <v-img :aspect-ratio="9/16" :src="event.show.cover"></v-img>
+                    <v-img v-if="event.show.id != 1" :aspect-ratio="9/16" :src="event.show.cover" />
+                    <v-img v-else :aspect-ratio="9/16" :src="settings.cover" />
                   </v-list-item-avatar>
                   <v-list-item-content>
-                    <v-list-item-title>{{ event.show.name }}</v-list-item-title>
+                    <v-list-item-title v-if="event.show.id != 1">{{ event.show.name }}</v-list-item-title>
+                    <v-list-item-title v-else>{{ event.memo }}</v-list-item-title>
                     <v-list-item-subtitle>
                       {{ format(new Date(event.start), 'h:mm a') }} 
                       ({{ formatDistanceToNow(new Date(event.start), {addSuffix: true}) }})
@@ -48,7 +50,7 @@
                         <v-icon small left>mdi-bookmark</v-icon>
                         {{ event.type.name }}
                       </v-chip>
-                      <v-chip label small color="indigo darken-2" class="mr-1" dark>
+                      <v-chip label small color="indigo darken-2" class="mr-1" dark v-if="event.show.id != 1">
                         <v-icon small left>mdi-filmstrip</v-icon>
                         {{ event.show.type }}
                       </v-chip>

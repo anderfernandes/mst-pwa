@@ -6,6 +6,7 @@ import addDays from 'date-fns/addDays'
 Vue.use(Vuex)
 
 const API_URL = 'https://astral.ctcd.org'
+const CONSTELLATIONS_API_URL = 'http://www.starsatnight.org/_api/json/v1?method=findquery&siteid=sciencetheater&subtype=constellation&entityname=content&fields=id,title,season,month,bestviewingnight,url,image,link&itemsperpage=89&maxitems=89'
 
 export default new Vuex.Store({
 
@@ -25,6 +26,8 @@ export default new Vuex.Store({
     shows           : [],
     errors          : [], // { title, message }
     focus           : new Date().toISOString().substr(0, 10),
+
+    constellations : [],
 
   },
 
@@ -69,6 +72,10 @@ export default new Vuex.Store({
     SET_FOCUS(state, payload) {
       Object.assign(state, { focus : payload })
     },
+
+    SET_CONSTELLATIONS(state, payload) {
+      Object.assign(state, { constellations: payload })
+    }
 
   },
 
@@ -137,6 +144,15 @@ export default new Vuex.Store({
         commit('SET_ERRORS', { title : 'Error on fetchCalendarEvents', message : error.message, type : 'error' })
       }
     },
+
+    async fetchConstellations({ commit }) {
+      try {
+        const response = await axios.get(CONSTELLATIONS_API_URL)
+        commit('SET_CONSTELLATIONS', response.data.data.items)
+      } catch (error) {
+        alert(`Unable to fetch constellations: ${error.message}`)
+      }
+    }
   },
 
   getters: {
