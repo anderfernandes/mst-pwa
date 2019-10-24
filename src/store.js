@@ -147,7 +147,7 @@ export default new Vuex.Store({
 
     async fetchConstellations({ commit }) {
       try {
-        const response = await axios.get(CONSTELLATIONS_API_URL)
+        const response = await axios.get("/constellations.json")
         commit('SET_CONSTELLATIONS', response.data.data.items)
       } catch (error) {
         alert(`Unable to fetch constellations: ${error.message}`)

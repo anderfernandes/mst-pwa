@@ -22,8 +22,9 @@
     }),
     async mounted() {
       try {
-        const response = await axios.get(`http://www.starsatnight.org/_api/json/v1?method=findmany&siteid=sciencetheater&subtype=constellation&entityname=content&fields=id,title,season,month,bestviewingnight,url,image,link&ids=${this.$route.params.id}`)
-        Object.assign(this, { constellation: response.data.data.items[0] })
+        const response = await axios.get("/constellations.json")
+        const constellation = response.data.data.items.find(constellation => constellation.id == this.$route.params.id)
+        Object.assign(this, { constellation })
       } catch(error) {
         alert(`Error in fetchConstellation: ${ error.message }`)
       }

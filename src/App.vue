@@ -40,10 +40,10 @@
         <v-icon>mdi-calendar-month-outline</v-icon>
       </v-btn>
 
-      <!--<v-btn exact to="/constellations">
+      <v-btn exact to="/constellations">
         <span>Constellations</span>
         <v-icon>mdi-weather-night</v-icon>
-      </v-btn>-->
+      </v-btn>
 
     </v-bottom-navigation>
     
