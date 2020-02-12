@@ -27,8 +27,8 @@
         </div>
       </v-col>
       <v-col xs="12">
-        <v-row>
-          <v-col xs="12" md="8" offset-md="2">
+        <v-row class="d-flex justify-center">
+          <v-col xs="12" md="8" lg="4">
             <div
               v-for="item in schedule"
               :key="item.date"

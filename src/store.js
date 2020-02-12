@@ -62,7 +62,7 @@ export default new Vuex.Store({
     },
 
     SET_ERRORS(state, payload) {
-      state.errors.push(payload)
+      Object.assign(state, { errors: payload })
     },
 
     SET_CONSTELLATIONS(state, payload) {
