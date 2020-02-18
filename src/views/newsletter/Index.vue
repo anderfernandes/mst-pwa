@@ -9,9 +9,10 @@
         </v-col>
       </v-row>
       <v-row justify="center" align="center" class="pa-2">
-        <v-alert type="info" color="blue darken-4"
-          >Tell us your name and email to get access to our newsletter!</v-alert
-        >
+        <v-alert
+          type="info"
+          color="blue darken-4"
+        >Tell us your name and email to get access to our newsletter!</v-alert>
       </v-row>
       <v-form v-model="valid" ref="form" lazy-validation>
         <v-text-field
@@ -20,6 +21,8 @@
           :rules="validateName"
           label="First Name"
           outlined
+          :loading="loading"
+          :disabled="loading"
         ></v-text-field>
         <v-text-field
           color="blue darken-4"
@@ -27,6 +30,8 @@
           :rules="validateName"
           label="Last Name"
           outlined
+          :loading="loading"
+          :disabled="loading"
         ></v-text-field>
 
         <v-text-field
@@ -35,6 +40,8 @@
           label="Email"
           :rules="validateEmail"
           outlined
+          :loading="loading"
+          :disabled="loading"
         ></v-text-field>
         <v-btn
           block
@@ -43,90 +50,101 @@
           dark
           class="text-capitalize"
           @click.prevent="submit"
+          :loading="loading"
         >
-          <v-icon>mdi-draw</v-icon>
-          Sign me up!
+          <v-icon>mdi-draw</v-icon>Sign me up!
         </v-btn>
       </v-form>
+      <v-dialog v-model="loading" hide-overlay persistent width="300">
+        <v-card color="blue darken-4" dark>
+          <v-card-text>
+            Signing you up, please wait...
+            <v-progress-linear indeterminate color="white" class="mb-0" />
+          </v-card-text>
+        </v-card>
+      </v-dialog>
     </v-col>
   </v-row>
 </template>
 
 <script>
-  import axios from 'axios'
+import axios from "axios";
 
-  export default {
-    data: () => ({
-      firstname: '',
-      lastname: '',
-      email: '',
-      message: '',
-      validateName: [
-        v => !!v || 'This field is required',
-        v =>
-          (v && v.length <= 16) ||
-          'This field cannot contain more than 16 characters',
-        v =>
-          (v && v.length >= 2) ||
-          'This field cannot contain less than 2 characters'
-      ],
-      validateEmail: [
-        v => !!v || 'Email is required',
-        v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
-      ],
-      valid: false
-    }),
-    methods: {
-      async submit() {
-        if (this.$refs.form.validate()) {
-          try {
-            const data = {
-              firstname: this.firstname,
-              lastname: this.lastname,
-              email: this.email
+export default {
+  data: () => ({
+    loading: false,
+    firstname: "",
+    lastname: "",
+    email: "",
+    message: "",
+    validateName: [
+      v => !!v || "This field is required",
+      v =>
+        (v && v.length <= 16) ||
+        "This field cannot contain more than 16 characters",
+      v =>
+        (v && v.length >= 2) ||
+        "This field cannot contain less than 2 characters"
+    ],
+    validateEmail: [
+      v => !!v || "Email is required",
+      v => /.+@.+\..+/.test(v) || "Please enter a valid email",
+      v =>
+        (v && v.length < 32) || "Email cannot contain more than 32 characters"
+    ],
+    valid: false
+  }),
+  methods: {
+    async submit() {
+      if (this.$refs.form.validate()) {
+        this.loading = true;
+        try {
+          const data = {
+            firstname: this.firstname,
+            lastname: this.lastname,
+            email: this.email
+          };
+          const response = await axios.post(
+            `${this.API_URL}/api/public/newsletter`,
+            data
+          );
+          this.loading = false;
+          this.$router.push({
+            name: "newsletter.thank-you",
+            params: { name: this.firstname }
+          });
+          this.$store.commit("SET_ERRORS", [
+            {
+              type: "success",
+              message: response.data.message
             }
-            const response = await axios.post(
-              `${this.$API_URL}/api/public/newsletter`,
-              data
-            )
-            this.$router.push({
-              name: 'newsletter.thank-you',
-              params: { name: this.firstname }
-            })
-            this.$store.commit('SET_ERRORS', [
-              {
-                type: 'success',
-                message: response.data.message
-              }
-            ])
-            this.$refs.form.reset()
-          } catch (error) {
-            this.$store.commit('SET_ERRORS', [
-              {
-                type: 'error',
-                message:
-                  error.response.status === 500
-                    ? 'Newsletter signup failed. Please try again with a different email.'
-                    : error.response.data.message || error.message
-              }
-            ])
-          }
+          ]);
+          this.$refs.form.reset();
+        } catch (error) {
+          this.loading = false;
+          this.$store.commit("SET_ERRORS", [
+            {
+              type: "error",
+              message: error.response.data.message || error.message
+            }
+          ]);
         }
       }
     }
   }
+};
 </script>
 
 <style scoped>
-  #newsletter {
-    background: no-repeat
-        linear-gradient(
-          rgba(255, 255, 255, 0.75),
-          rgba(255, 255, 255, 1),
-          rgba(255, 255, 255, 1),
-          rgba(255, 255, 255, 0.75)
-        ),
-      url('../../assets/cover.jpg') !important;
-    background-size: cover !important;
-  }
+#newsletter {
+  background: no-repeat
+      linear-gradient(
+        rgba(255, 255, 255, 0.75),
+        rgba(255, 255, 255, 1),
+        rgba(255, 255, 255, 1),
+        rgba(255, 255, 255, 0.75)
+      ),
+    url("../../assets/cover.jpg") !important;
+  background-size: cover !important;
+}
 </style>
